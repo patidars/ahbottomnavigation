@@ -411,8 +411,13 @@ public class AHBottomNavigation extends FrameLayout {
 			AHTextView title = view.findViewById(R.id.bottom_navigation_item_title);
             AHTextView notification = view.findViewById(R.id.bottom_navigation_notification);
 
-            icon.getLayoutParams().width = getIconWidth(itemIndex);
-            icon.getLayoutParams().height = getIconHeight(itemIndex);
+			icon.getLayoutParams().width = getIconWidth(itemIndex);
+			icon.getLayoutParams().height = getIconHeight(itemIndex);
+			if (i == 1) {
+				int h1 = getIconHeight(itemIndex);
+				int h0 = getIconHeight(0);
+				icon.animate().translationYBy(h0-h1).setDuration(0);
+			}
 
 			icon.setImageDrawable(item.getDrawable(context));
 			if (titleState == TitleState.ALWAYS_HIDE || item.getTitle(context).isEmpty()) {
@@ -470,6 +475,7 @@ public class AHBottomNavigation extends FrameLayout {
 			
 			if (itemsEnabledStates[i]) {
 				view.setOnClickListener(v -> updateItems(itemIndex, true));
+				icon.setOnClickListener(v -> updateItems(itemIndex, true));
 				icon.setImageDrawable(AHHelper.getTintDrawable(items.get(i).getDrawable(context), current ? iconActiveColor.get(i) : iconInactiveColor.get(i), forceTint));
 				title.setTextColor(current ? titleActiveColor.get(i) : titleInactiveColor.get(i));
 				view.setSoundEffectsEnabled(soundEffectsEnabled);
@@ -483,10 +489,20 @@ public class AHBottomNavigation extends FrameLayout {
             LayoutParams params = new LayoutParams((int) itemWidth, (int) height);
 			linearLayout.addView(view, params);
 			views.add(view);
+			setAllParentsClip(icon, false);
             setTabAccessibilityLabel(itemIndex, currentItem);
 		}
 
 		updateNotifications(true, UPDATE_ALL_NOTIFICATIONS);
+	}
+
+	public static void setAllParentsClip(View v, boolean enabled) {
+		while (v.getParent() != null && v.getParent() instanceof ViewGroup) {
+			ViewGroup viewGroup = (ViewGroup) v.getParent();
+			viewGroup.setClipChildren(enabled);
+			viewGroup.setClipToPadding(enabled);
+			v = viewGroup;
+		}
 	}
 
     private int getIconHeight(int index) {
