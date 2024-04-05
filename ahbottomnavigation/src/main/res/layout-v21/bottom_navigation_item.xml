@@ -17,7 +17,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/bottom_navigation_margin_bottom"
         android:layout_marginTop="@dimen/bottom_navigation_margin_top_inactive"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:translationZ="100dp"/>
 
     <com.aurelhubert.ahbottomnavigation.AHTextView
         android:id="@+id/bottom_navigation_item_title"
