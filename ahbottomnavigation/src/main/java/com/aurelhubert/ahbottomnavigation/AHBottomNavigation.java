@@ -501,6 +501,7 @@ public class AHBottomNavigation extends FrameLayout {
 			ViewGroup viewGroup = (ViewGroup) v.getParent();
 			viewGroup.setClipChildren(enabled);
 			viewGroup.setClipToPadding(enabled);
+			Log.i(TAG,  "testview "+viewGroup.toString());
 			v = viewGroup;
 		}
 	}
